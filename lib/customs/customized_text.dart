@@ -20,7 +20,10 @@ class CustomizedText extends StatelessWidget {
     }
 
     // For strings with 5 or more characters, show the first 3 and last 2 characters
-    return " " + input.substring(0, 3) + '*' * (length - 5) + input.substring(length - 2);
+    return " " +
+        input.substring(0, 3) +
+        '*' * (length - 5) +
+        input.substring(length - 2);
   }
 
   TextAlign customAlignment({required Map customizacao}) {
@@ -34,7 +37,9 @@ class CustomizedText extends StatelessWidget {
   }
 
   TextStyle customFont({required Map customizacao}) {
-    double fontSize = (int.tryParse(customizacao['tamanho_fonte'].toString()) ?? 12).toDouble();
+    double fontSize =
+        (int.tryParse(customizacao['tamanho_fonte'].toString()) ?? 12)
+            .toDouble();
     fontSize *= 1.5;
 
     FontWeight weight = switch (customizacao['estilo_fonte']['bold']) {

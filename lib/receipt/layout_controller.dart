@@ -43,12 +43,16 @@ class LayoutController {
       if (totalColunas > 0) {
         final razao = (100 / totalColunas);
         final colunas = linha['colunas'] as List;
-        final listCabecalho = colunas.firstWhere((c) => c.containsKey('cabecalho'), orElse: () => null);
+        final listCabecalho = colunas
+            .firstWhere((c) => c.containsKey('cabecalho'), orElse: () => null);
         if (listCabecalho != null) {
           final cabecalho = listCabecalho['cabecalho'] as List;
 
           for (var i = 0; i < cabecalho.length; i++) {
-            columnWidth[i] = FractionColumnWidth((int.tryParse(cabecalho[i]['coluna']['tamanho'].toString()) ?? razao) / 100);
+            columnWidth[i] = FractionColumnWidth(
+                (int.tryParse(cabecalho[i]['coluna']['tamanho'].toString()) ??
+                        razao) /
+                    100);
           }
         }
 

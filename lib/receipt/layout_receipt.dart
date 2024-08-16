@@ -5,22 +5,28 @@ import 'package:printer_gateway/receipt/layout_controller.dart';
 
 class LayoutReceipt extends StatelessWidget {
   final String jsonContent;
-  final double maxHeigth;
+  final double maxWidth;
   final Uint8List? imageHeader;
   final Uint8List? imageFooter;
 
-  const LayoutReceipt({super.key, required this.jsonContent, required this.maxHeigth, this.imageHeader, this.imageFooter});
+  const LayoutReceipt(
+      {super.key,
+      required this.jsonContent,
+      required this.maxWidth,
+      this.imageHeader,
+      this.imageFooter});
 
   @override
   Widget build(BuildContext context) {
-    final controller = LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
+    final controller =
+        LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
     controller.parse(jsonContent);
     return Material(
       child: SizedBox(
-        width: maxHeigth,
+        width: maxWidth,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: controller.layoutReceipt,
         ),

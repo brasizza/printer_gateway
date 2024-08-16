@@ -8,7 +8,8 @@ class CustomQrcode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = (int.tryParse(qrcode['size'].toString()) ?? 100).toDouble();
+    final double size =
+        (int.tryParse(qrcode['size'].toString()) ?? 100).toDouble();
     return Center(
       child: SizedBox(
         width: size,

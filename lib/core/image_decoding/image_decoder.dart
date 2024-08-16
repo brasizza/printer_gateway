@@ -24,7 +24,8 @@ class ImageDecoder {
     for (int i = 0; i < yParts; i++) {
       /// Extract a part of the image
       ///
-      final partImage = await _extractImagePart(image, 0, i * partHeight, image.width, partHeight);
+      final partImage = await _extractImagePart(
+          image, 0, i * partHeight, image.width, partHeight);
 
       /// Convert the extracted image part to byte data
       ///
@@ -42,14 +43,16 @@ class ImageDecoder {
 
   /// Extracts a rectangular part from the image
   ///
-  Future<ui.Image> _extractImagePart(ui.Image image, int x, int y, int width, int height) async {
+  Future<ui.Image> _extractImagePart(
+      ui.Image image, int x, int y, int width, int height) async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final paint = Paint();
 
     /// Define source and destination rectangles for cropping
     ///
-    final src = Rect.fromLTWH(x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble());
+    final src = Rect.fromLTWH(
+        x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble());
     final dst = Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
 
     /// Draw the specified part of the image onto the canvas
