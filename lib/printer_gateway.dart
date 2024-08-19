@@ -13,10 +13,7 @@ class PrinterGateway {
   Uint8List? _imageHeader;
   Uint8List? _imageFooter;
 
-  PrinterGateway(
-      {String jsonData = '[{}]',
-      Uint8List? imageHeader,
-      Uint8List? imageFooter})
+  PrinterGateway({String jsonData = '[{}]', Uint8List? imageHeader, Uint8List? imageFooter})
       : _jsonData = jsonData,
         _imageHeader = imageHeader,
         _imageFooter = imageFooter;
@@ -48,8 +45,7 @@ class PrinterGateway {
     return images;
   }
 
-  Future<List<decoder.Image>> toPrinter(BuildContext context,
-      {int maxHeight = 500, double maxWidth = 576}) async {
+  Future<List<decoder.Image>> toEscPosPrinter(BuildContext context, {int maxHeight = 500, double maxWidth = 576}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
       await _capture(context, maxWidth: maxWidth),
@@ -59,12 +55,19 @@ class PrinterGateway {
     return await _rasterConverter(parts);
   }
 
-  Future<Uint8List> toImage(BuildContext context,
-          {double maxWidth = 576}) async =>
-      await _capture(context, maxWidth: maxWidth);
+  Future<List<Uint8List>> toPosPrinter(BuildContext context, {int maxHeight = 500, double maxWidth = 576}) async {
+    ImageDecoder decoder = ImageDecoder();
+    final parts = await decoder.splitImage(
+      await _capture(context, maxWidth: maxWidth),
+      maxHeight,
+    );
 
-  Future<Uint8List> _capture(BuildContext context,
-      {required double maxWidth}) async {
+    return parts;
+  }
+
+  Future<Uint8List> toImage(BuildContext context, {double maxWidth = 576}) async => await _capture(context, maxWidth: maxWidth);
+
+  Future<Uint8List> _capture(BuildContext context, {required double maxWidth}) async {
     ScreenshotController screenshotController = ScreenshotController();
 
     return await screenshotController.captureFromLongWidget(
