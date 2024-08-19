@@ -63,10 +63,11 @@ class PrinterGateway {
           {double maxWidth = 576}) async =>
       await _capture(context, maxWidth: maxWidth);
 
-  Future<Uint8List> _capture(BuildContext context, {required double maxWidth}) {
+  Future<Uint8List> _capture(BuildContext context,
+      {required double maxWidth}) async {
     ScreenshotController screenshotController = ScreenshotController();
 
-    return screenshotController.captureFromLongWidget(
+    return await screenshotController.captureFromLongWidget(
       InheritedTheme.captureAll(
         context,
         toWidget(maxWidth: maxWidth),
