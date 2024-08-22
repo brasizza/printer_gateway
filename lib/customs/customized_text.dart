@@ -20,14 +20,11 @@ class CustomizedText extends StatelessWidget {
     }
 
     // For strings with 5 or more characters, show the first 3 and last 2 characters
-    return " " +
-        input.substring(0, 3) +
-        '*' * (length - 5) +
-        input.substring(length - 2);
+    return " ${input.substring(0, 3)}${'*' * (length - 5)}${input.substring(length - 2)}";
   }
 
   TextAlign customAlignment({required Map customizacao}) {
-    return switch (customizacao['alinhamento']) {
+    return switch (customizacao['alignment']) {
       0 => TextAlign.start,
       1 => TextAlign.center,
       2 => TextAlign.end,
@@ -37,18 +34,16 @@ class CustomizedText extends StatelessWidget {
   }
 
   TextStyle customFont({required Map customizacao}) {
-    double fontSize =
-        (int.tryParse(customizacao['tamanho_fonte'].toString()) ?? 12)
-            .toDouble();
+    double fontSize = (int.tryParse(customizacao['font_size'].toString()) ?? 12).toDouble();
     fontSize *= 1.5;
 
-    FontWeight weight = switch (customizacao['estilo_fonte']['bold']) {
+    FontWeight weight = switch (customizacao['font_style']['bold']) {
       true => FontWeight.bold,
       false => FontWeight.normal,
       _ => FontWeight.normal,
     };
 
-    FontStyle style = switch (customizacao['estilo_fonte']['italico']) {
+    FontStyle style = switch (customizacao['font_style']['italic']) {
       true => FontStyle.italic,
       false => FontStyle.normal,
       _ => FontStyle.normal,
@@ -67,19 +62,21 @@ class CustomizedText extends StatelessWidget {
 
     TextStyle style = const TextStyle();
     Color containerColor = Colors.transparent;
-    if (linha.containsKey('customizacao')) {
-      style = customFont(customizacao: linha['customizacao']);
-      align = customAlignment(customizacao: linha['customizacao']);
-      if ((linha['customizacao'] as Map).containsKey('reverse')) {
-        style = style.copyWith(color: Colors.white);
-        containerColor = Colors.black;
+    if (linha.containsKey('customization')) {
+      style = customFont(customizacao: linha['customization']);
+      align = customAlignment(customizacao: linha['customization']);
+      if ((linha['customization'] as Map).containsKey('reverse')) {
+        if (linha['customization']['reverse'] == true) {
+          style = style.copyWith(color: Colors.white);
+          containerColor = Colors.black;
+        }
       }
     }
 
     return Container(
       color: containerColor,
       child: Text(
-        "${linha['content']}${linha.containsKey('sensive') ? obscureString(linha['sensive']) : ''}",
+        "${linha['content']}${linha.containsKey('sensive_content') ? obscureString(linha['sensive_content']) : ''}",
         style: style,
         textAlign: align,
       ),

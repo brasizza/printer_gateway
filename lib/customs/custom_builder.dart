@@ -14,9 +14,9 @@ class CustomBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (linha.containsKey('content')) {
       return _buildCustomizedText();
-    } else if (linha.containsKey('tracejado')) {
+    } else if (linha.containsKey('divider')) {
       return const CustomDivider();
-    } else if (linha.containsKey('pular')) {
+    } else if (linha.containsKey('jump')) {
       return _buildCustomJumpLine();
     } else if (linha.containsKey('qrcode')) {
       return _buildCustomQrcode();
@@ -30,7 +30,7 @@ class CustomBuilder extends StatelessWidget {
   }
 
   Widget _buildCustomJumpLine() {
-    final int pular = int.tryParse(linha['pular'].toString()) ?? 1;
+    final int pular = int.tryParse(linha['jump'].toString()) ?? 1;
     return CustomJumpLine(times: pular);
   }
 

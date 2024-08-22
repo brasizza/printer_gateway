@@ -9,17 +9,11 @@ class LayoutReceipt extends StatelessWidget {
   final Uint8List? imageHeader;
   final Uint8List? imageFooter;
 
-  const LayoutReceipt(
-      {super.key,
-      required this.jsonContent,
-      required this.maxWidth,
-      this.imageHeader,
-      this.imageFooter});
+  const LayoutReceipt({super.key, required this.jsonContent, required this.maxWidth, this.imageHeader, this.imageFooter});
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
+    final controller = LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
     controller.parse(jsonContent);
     return Material(
       child: SizedBox(

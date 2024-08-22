@@ -33,42 +33,56 @@ class LayoutController {
 
   List<Widget> _buildLine(data) {
     final returnWidgets = <Widget>[];
-    final linha = data['linha'] as Map;
+    final linha = data['line'] as Map;
 
-    if (linha.containsKey('colunas')) {
+    if (linha.containsKey('column')) {
+      final widgetHeader = <Widget>[];
       final widgetColunas = <Widget>[];
-      final totalColunas = linha['colunas'].length;
+      final totalColunas = linha['column'].length;
       Map<int, TableColumnWidth> columnWidth = {};
 
       if (totalColunas > 0) {
         final razao = (100 / totalColunas);
-        final colunas = linha['colunas'] as List;
-        final listCabecalho = colunas
-            .firstWhere((c) => c.containsKey('cabecalho'), orElse: () => null);
+        final colunas = linha['column'] as List;
+        final listCabecalho = colunas.firstWhere((c) => c.containsKey('header'), orElse: () => null);
         if (listCabecalho != null) {
-          final cabecalho = listCabecalho['cabecalho'] as List;
+          final cabecalho = listCabecalho['header'] as List;
 
           for (var i = 0; i < cabecalho.length; i++) {
-            columnWidth[i] = FractionColumnWidth(
-                (int.tryParse(cabecalho[i]['coluna']['tamanho'].toString()) ??
-                        razao) /
-                    100);
+            columnWidth[i] = FractionColumnWidth((int.tryParse(cabecalho[i]['row']['size'].toString()) ?? razao) / 100);
           }
         }
-
-        for (var coluna in linha['colunas']) {
-          final linha = coluna['coluna'];
+        for (var coluna in linha['column']) {
+          final linha = coluna['row'];
 
           widgetColunas.add(TableCell(
             child: CustomBuilder(linha: linha),
           ));
         }
+        final row = <TableRow>[];
+        if (listCabecalho != null) {
+          final cabecalho = listCabecalho['header'] as List;
+          for (var cabeca in cabecalho) {
+            final linha = cabeca['row'];
+            widgetHeader.add(TableCell(
+              child: CustomBuilder(linha: linha),
+            ));
+          }
+          row.add(
+            TableRow(
+              children: widgetHeader,
+            ),
+          );
+        }
+        row.add(
+          TableRow(
+            children: widgetColunas,
+          ),
+        );
 
         returnWidgets.add(Table(
           columnWidths: columnWidth,
-          children: [
-            TableRow(children: widgetColunas),
-          ],
+          children: row,
         ));
       } else {
         returnWidgets.add(
@@ -88,10 +102,10 @@ class LayoutController {
     final headerLayout = <Widget>[];
     bool hasImage = false;
     for (var linha in item) {
-      if (linha.containsKey('imagem')) {
-        hasImage = linha['imagem'] ?? false;
+      if (linha.containsKey('image')) {
+        hasImage = linha['image'] ?? false;
       } else {
-        if (linha.containsKey('linha')) {
+        if (linha.containsKey('line')) {
           headerLayout.addAll(_buildLine(linha));
         }
       }
