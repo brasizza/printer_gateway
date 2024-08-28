@@ -21,14 +21,17 @@ class LayoutReceipt extends StatelessWidget {
     final controller =
         LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
     controller.parse(jsonContent);
-    return Material(
-      child: SizedBox(
-        width: maxWidth,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: controller.layoutReceipt,
+    return DefaultTextStyle(
+      style: const TextStyle(fontFamily: null),
+      child: Material(
+        child: SizedBox(
+          width: maxWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: controller.layoutReceipt,
+          ),
         ),
       ),
     );
