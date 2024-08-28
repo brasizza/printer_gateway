@@ -49,7 +49,7 @@ class PrinterGateway {
   }
 
   Future<List<decoder.Image>> toEscPosPrinter(BuildContext context,
-      {int maxHeight = 500, double maxWidth = 576}) async {
+      {int maxHeight = 2000, double maxWidth = 576}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
       await _capture(context, maxWidth: maxWidth),
@@ -60,7 +60,7 @@ class PrinterGateway {
   }
 
   Future<List<Uint8List>> toPosPrinter(BuildContext context,
-      {int maxHeight = 500, double maxWidth = 576}) async {
+      {int maxHeight = 2000, double maxWidth = 576}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
       await _capture(context, maxWidth: maxWidth),
