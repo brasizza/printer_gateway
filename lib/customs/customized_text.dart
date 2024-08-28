@@ -89,13 +89,10 @@ class CustomizedText extends StatelessWidget {
         ? const SizedBox.shrink()
         : Container(
             color: containerColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                "${linha['content']}${linha.containsKey('sensive_content') ? obscureString(linha['sensive_content']) : ''}",
-                style: style,
-                textAlign: align,
-              ),
+            child: Text(
+              "${linha['content']}${linha.containsKey('sensive_content') ? obscureString(linha['sensive_content']) : ''}",
+              style: style,
+              textAlign: align,
             ),
           );
   }

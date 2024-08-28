@@ -93,11 +93,7 @@ class LayoutController {
                     final linha = itemLine['row'];
                     if (linha != null) {
                       widgetItems.add(TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 2),
-                          child: CustomBuilder(linha: linha),
-                        ),
+                        child: CustomBuilder(linha: linha),
                       ));
                     }
                   }

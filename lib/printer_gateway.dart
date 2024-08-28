@@ -83,6 +83,7 @@ class PrinterGateway {
         context,
         toWidget(maxWidth: maxWidth),
       ),
+      pixelRatio: MediaQuery.of(context).devicePixelRatio,
       delay: const Duration(milliseconds: 100),
       context: context,
     );
