@@ -21,8 +21,9 @@ class PrinterGateway {
         _imageHeader = imageHeader,
         _imageFooter = imageFooter;
 
-  Widget toWidget({double maxWidth = 576}) => LayoutReceipt(
+  Widget toWidget({double maxWidth = 576, int margin = 0}) => LayoutReceipt(
         jsonContent: _jsonData,
+        margin: margin,
         maxWidth: maxWidth,
         imageHeader: _imageHeader,
         imageFooter: _imageFooter,
@@ -30,9 +31,7 @@ class PrinterGateway {
 
   addHeaderImage(Uint8List image) => _imageHeader = image;
 
-  addFooterImage(Uint8List image) async {
-    _imageFooter = image;
-  }
+  addFooterImage(Uint8List image) => _imageFooter = image;
 
   addData(String jsonData) => _jsonData = jsonData;
 
@@ -49,10 +48,10 @@ class PrinterGateway {
   }
 
   Future<List<decoder.Image>> toEscPosPrinter(BuildContext context,
-      {int maxHeight = 2000, double maxWidth = 576}) async {
+      {int maxHeight = 2000, double maxWidth = 576, int margin = 0}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
-      await _capture(context, maxWidth: maxWidth),
+      await _capture(context, maxWidth: maxWidth, margin: margin),
       maxHeight,
     );
 
@@ -60,10 +59,10 @@ class PrinterGateway {
   }
 
   Future<List<Uint8List>> toPosPrinter(BuildContext context,
-      {int maxHeight = 2000, double maxWidth = 576}) async {
+      {int maxHeight = 2000, double maxWidth = 576, int margin = 0}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
-      await _capture(context, maxWidth: maxWidth),
+      await _capture(context, maxWidth: maxWidth, margin: margin),
       maxHeight,
     );
 
@@ -71,17 +70,17 @@ class PrinterGateway {
   }
 
   Future<Uint8List> toImage(BuildContext context,
-          {double maxWidth = 576}) async =>
-      await _capture(context, maxWidth: maxWidth);
+          {double maxWidth = 576, int margin = 0}) async =>
+      await _capture(context, maxWidth: maxWidth, margin: margin);
 
   Future<Uint8List> _capture(BuildContext context,
-      {required double maxWidth}) async {
+      {required double maxWidth, int margin = 0}) async {
     ScreenshotController screenshotController = ScreenshotController();
 
     return await screenshotController.captureFromLongWidget(
       InheritedTheme.captureAll(
         context,
-        toWidget(maxWidth: maxWidth),
+        toWidget(maxWidth: maxWidth, margin: margin),
       ),
       pixelRatio: MediaQuery.of(context).devicePixelRatio,
       delay: const Duration(milliseconds: 100),

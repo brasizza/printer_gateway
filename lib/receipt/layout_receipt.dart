@@ -8,29 +8,34 @@ class LayoutReceipt extends StatelessWidget {
   final double maxWidth;
   final Uint8List? imageHeader;
   final Uint8List? imageFooter;
+  final int margin;
 
   const LayoutReceipt(
       {super.key,
       required this.jsonContent,
       required this.maxWidth,
       this.imageHeader,
-      this.imageFooter});
+      this.imageFooter,
+      this.margin = 0});
 
   @override
   Widget build(BuildContext context) {
     final controller =
         LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
     controller.parse(jsonContent);
-    return DefaultTextStyle(
-      style: const TextStyle(fontFamily: null),
-      child: Material(
-        child: SizedBox(
-          width: maxWidth,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: controller.layoutReceipt,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: margin.toDouble()),
+      child: DefaultTextStyle(
+        style: const TextStyle(fontFamily: null),
+        child: Material(
+          child: SizedBox(
+            width: maxWidth,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: controller.layoutReceipt,
+            ),
           ),
         ),
       ),
