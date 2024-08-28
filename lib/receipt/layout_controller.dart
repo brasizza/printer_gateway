@@ -40,46 +40,87 @@ class LayoutController {
       final widgetColunas = <Widget>[];
       final totalColunas = linha['column'].length;
       Map<int, TableColumnWidth> columnWidth = {};
+      final row = <TableRow>[];
 
       if (totalColunas > 0) {
         final razao = (100 / totalColunas);
         final colunas = linha['column'] as List;
-        final listCabecalho = colunas.firstWhere((c) => c.containsKey('header'), orElse: () => null);
+        final listCabecalho = colunas.firstWhere((c) => c.containsKey('header'),
+            orElse: () => null);
         if (listCabecalho != null) {
           final cabecalho = listCabecalho['header'] as List;
 
           for (var i = 0; i < cabecalho.length; i++) {
-            columnWidth[i] = FractionColumnWidth((int.tryParse(cabecalho[i]['row']['size'].toString()) ?? razao) / 100);
+            columnWidth[i] = FractionColumnWidth(
+                (int.tryParse(cabecalho[i]['row']['size'].toString()) ??
+                        razao) /
+                    100);
           }
         }
-        for (var coluna in linha['column']) {
-          final linha = coluna['row'];
 
-          widgetColunas.add(TableCell(
-            child: CustomBuilder(linha: linha),
-          ));
-        }
-        final row = <TableRow>[];
         if (listCabecalho != null) {
           final cabecalho = listCabecalho['header'] as List;
           for (var cabeca in cabecalho) {
             final linha = cabeca['row'];
-            widgetHeader.add(TableCell(
-              child: CustomBuilder(linha: linha),
-            ));
+            if (linha != null) {
+              widgetHeader.add(TableCell(
+                child: CustomBuilder(linha: linha),
+              ));
+            }
           }
+          if (widgetHeader.isNotEmpty) {
+            row.add(
+              TableRow(
+                children: widgetHeader,
+              ),
+            );
+          }
+        }
+        if (linha.containsKey('column')) {
+          for (var coluna in linha['column']) {
+            final linha = coluna['row'];
+            if (linha != null) {
+              widgetColunas.add(TableCell(
+                child: CustomBuilder(linha: linha),
+              ));
+            } else {
+              final items = (listCabecalho['items']);
+              if (items != null) {
+                var widgetItems = <Widget>[];
+                for (var item in items) {
+                  widgetItems.clear();
+                  for (var itemLine in item) {
+                    final linha = itemLine['row'];
+                    if (linha != null) {
+                      widgetItems.add(TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 2),
+                          child: CustomBuilder(linha: linha),
+                        ),
+                      ));
+                    }
+                  }
+                  if (widgetItems.isNotEmpty) {
+                    row.add(
+                      TableRow(
+                        children: [...widgetItems],
+                      ),
+                    );
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (widgetColunas.isNotEmpty) {
           row.add(
             TableRow(
-              children: widgetHeader,
+              children: widgetColunas,
             ),
           );
         }
-        row.add(
-          TableRow(
-            children: widgetColunas,
-          ),
-        );
-
         returnWidgets.add(Table(
           columnWidths: columnWidth,
           children: row,

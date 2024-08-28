@@ -34,20 +34,32 @@ class CustomizedText extends StatelessWidget {
   }
 
   TextStyle customFont({required Map customizacao}) {
-    double fontSize = (int.tryParse(customizacao['font_size'].toString()) ?? 12).toDouble();
+    FontWeight weight = FontWeight.normal;
+    FontStyle style = FontStyle.normal;
+    double fontSize =
+        (int.tryParse(customizacao['font_size'].toString()) ?? 12).toDouble();
     fontSize *= 1.5;
+    if (customizacao.containsKey('font_style')) {
+      if (customizacao['font_style'].containsKey('bold')) {
+        weight = switch (customizacao['font_style']['bold'] ?? false) {
+          true => FontWeight.bold,
+          false => FontWeight.normal,
+          _ => FontWeight.normal,
+        };
+      } else {
+        weight = FontWeight.normal;
+      }
 
-    FontWeight weight = switch (customizacao['font_style']['bold']) {
-      true => FontWeight.bold,
-      false => FontWeight.normal,
-      _ => FontWeight.normal,
-    };
-
-    FontStyle style = switch (customizacao['font_style']['italic']) {
-      true => FontStyle.italic,
-      false => FontStyle.normal,
-      _ => FontStyle.normal,
-    };
+      if (customizacao['font_style'].containsKey('italic')) {
+        style = switch (customizacao['font_style']['italic'] ?? false) {
+          true => FontStyle.italic,
+          false => FontStyle.normal,
+          _ => FontStyle.normal,
+        };
+      } else {
+        style = FontStyle.normal;
+      }
+    }
 
     return TextStyle(
       fontSize: fontSize.toDouble(),
@@ -73,13 +85,18 @@ class CustomizedText extends StatelessWidget {
       }
     }
 
-    return Container(
-      color: containerColor,
-      child: Text(
-        "${linha['content']}${linha.containsKey('sensive_content') ? obscureString(linha['sensive_content']) : ''}",
-        style: style,
-        textAlign: align,
-      ),
-    );
+    return linha['content'].isEmpty
+        ? const SizedBox.shrink()
+        : Container(
+            color: containerColor,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                "${linha['content']}${linha.containsKey('sensive_content') ? obscureString(linha['sensive_content']) : ''}",
+                style: style,
+                textAlign: align,
+              ),
+            ),
+          );
   }
 }
