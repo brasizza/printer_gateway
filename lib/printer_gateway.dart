@@ -1,5 +1,6 @@
 library printer_gateway;
 
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class PrinterGateway {
     return images;
   }
 
-  Future<List<decoder.Image>> toEscPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, fixedRatio = false}) async {
+  Future<List<decoder.Image>> toEscPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, double fixedRatio = 0}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
       await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio),
@@ -54,7 +55,7 @@ class PrinterGateway {
     return await _rasterConverter(parts);
   }
 
-  Future<List<Uint8List>> toPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, fixedRatio = false}) async {
+  Future<List<Uint8List>> toPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, double fixedRatio = 0}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
       await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio),
@@ -66,17 +67,15 @@ class PrinterGateway {
 
   Future<Uint8List> toImage(BuildContext context, {double maxWidth = 576, int margin = 0, fixedRatio = false}) async => await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio);
 
-  Future<Uint8List> _capture(BuildContext context, {required double maxWidth, int margin = 0, fixedRatio = false}) async {
+  Future<Uint8List> _capture(BuildContext context, {required double maxWidth, int margin = 0, double fixedRatio = 0}) async {
     ScreenshotController screenshotController = ScreenshotController();
-    final devicePixel = MediaQuery.of(context).devicePixelRatio;
-
-    print("Device Pixel =  $devicePixel");
+    log("Device Pixel Ratio =  $fixedRatio");
     return await screenshotController.captureFromLongWidget(
       InheritedTheme.captureAll(
         context,
         toWidget(maxWidth: maxWidth, margin: margin),
       ),
-      pixelRatio: fixedRatio ? devicePixel : null,
+      pixelRatio: fixedRatio != 0 ? fixedRatio : null,
       delay: const Duration(milliseconds: 100),
       context: context,
     );
