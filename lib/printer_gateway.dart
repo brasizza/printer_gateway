@@ -13,10 +13,7 @@ class PrinterGateway {
   Uint8List? _imageHeader;
   Uint8List? _imageFooter;
 
-  PrinterGateway(
-      {String jsonData = '[{}]',
-      Uint8List? imageHeader,
-      Uint8List? imageFooter})
+  PrinterGateway({String jsonData = '[{}]', Uint8List? imageHeader, Uint8List? imageFooter})
       : _jsonData = jsonData,
         _imageHeader = imageHeader,
         _imageFooter = imageFooter;
@@ -47,42 +44,39 @@ class PrinterGateway {
     return images;
   }
 
-  Future<List<decoder.Image>> toEscPosPrinter(BuildContext context,
-      {int maxHeight = 2000, double maxWidth = 576, int margin = 0}) async {
+  Future<List<decoder.Image>> toEscPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, fixedRatio = false}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
-      await _capture(context, maxWidth: maxWidth, margin: margin),
+      await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio),
       maxHeight,
     );
 
     return await _rasterConverter(parts);
   }
 
-  Future<List<Uint8List>> toPosPrinter(BuildContext context,
-      {int maxHeight = 2000, double maxWidth = 576, int margin = 0}) async {
+  Future<List<Uint8List>> toPosPrinter(BuildContext context, {int maxHeight = 2000, double maxWidth = 576, int margin = 0, fixedRatio = false}) async {
     ImageDecoder decoder = ImageDecoder();
     final parts = await decoder.splitImage(
-      await _capture(context, maxWidth: maxWidth, margin: margin),
+      await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio),
       maxHeight,
     );
 
     return parts;
   }
 
-  Future<Uint8List> toImage(BuildContext context,
-          {double maxWidth = 576, int margin = 0}) async =>
-      await _capture(context, maxWidth: maxWidth, margin: margin);
+  Future<Uint8List> toImage(BuildContext context, {double maxWidth = 576, int margin = 0, fixedRatio = false}) async => await _capture(context, maxWidth: maxWidth, margin: margin, fixedRatio: fixedRatio);
 
-  Future<Uint8List> _capture(BuildContext context,
-      {required double maxWidth, int margin = 0}) async {
+  Future<Uint8List> _capture(BuildContext context, {required double maxWidth, int margin = 0, fixedRatio = false}) async {
     ScreenshotController screenshotController = ScreenshotController();
+    final devicePixel = MediaQuery.of(context).devicePixelRatio;
 
+    print("Device Pixel =  $devicePixel");
     return await screenshotController.captureFromLongWidget(
       InheritedTheme.captureAll(
         context,
         toWidget(maxWidth: maxWidth, margin: margin),
       ),
-      pixelRatio: MediaQuery.of(context).devicePixelRatio,
+      pixelRatio: fixedRatio ? devicePixel : null,
       delay: const Duration(milliseconds: 100),
       context: context,
     );
