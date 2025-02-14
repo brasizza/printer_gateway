@@ -16,7 +16,7 @@ class ImageDecoder {
 
     /// Calculate the number of vertical parts needed
     ///
-    int yParts = (image.height / maxHeight).ceil();
+    int yParts = (maxHeight == 0) ? 1 : (image.height / maxHeight).ceil();
     int partHeight = (image.height / yParts).round();
 
     /// Iterate over each vertical part

@@ -60,12 +60,16 @@ class CustomizedText extends StatelessWidget {
         style = FontStyle.normal;
       }
     }
+    String? fontName;
+    if (customizacao.containsKey('font_name')) {
+      fontName = customizacao['font_name'];
+    }
 
     return TextStyle(
-      fontSize: fontSize.toDouble(),
-      fontWeight: weight,
-      fontStyle: style,
-    );
+        fontSize: fontSize.toDouble(),
+        fontWeight: weight,
+        fontStyle: style,
+        fontFamily: fontName);
   }
 
   @override
