@@ -1,6 +1,6 @@
 name: printer_gateway
 description: "A Flutter package for normative printer functionality that allows generating and formatting print documents from JSON data"
-version: 0.0.2
+version: 0.0.3
 homepage: "https://github.com/brasizza/printer_gateway"
 
 environment:

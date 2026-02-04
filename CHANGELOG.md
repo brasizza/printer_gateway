@@ -1,3 +1,4 @@
+## 0.0.3
 ## 0.0.2
 * Improve README and structure of the package
 

@@ -1,4 +1,39 @@
+analyzer:
+  errors:
+    constant_identifier_names: ignore
 include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+linter:
+  rules:
+    # Style rules
+    - prefer_single_quotes
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - avoid_print
+    - avoid_unnecessary_containers
+    - avoid_redundant_argument_values
+    - use_key_in_widget_constructors
+    
+    # Documentation
+    - public_member_api_docs
+    
+    # Error prevention
+    - avoid_empty_else
+    - avoid_returning_null_for_future
+    - cancel_subscriptions
+    - close_sinks
+    - always_declare_return_types
+    - avoid_slow_async_io
+    
+    # Code quality
+    - prefer_final_fields
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - unnecessary_this
+    - sort_child_properties_last
+    - sort_constructors_first
+    - use_super_parameters

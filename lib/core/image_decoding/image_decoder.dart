@@ -8,28 +8,28 @@ class ImageDecoder {
   /// Splits the given image into vertical parts of specified maximum height
   ///
   Future<List<Uint8List>> splitImage(Uint8List uintImage, int maxHeight) async {
-    final parts = <Uint8List>[];
+    final List<Uint8List> parts = <Uint8List>[];
 
     /// Load the image from bytes
     ///
-    final image = await _loadImage(uintImage);
+    final ui.Image image = await _loadImage(uintImage);
 
     /// Calculate the number of vertical parts needed
     ///
-    int yParts = (maxHeight == 0) ? 1 : (image.height / maxHeight).ceil();
-    int partHeight = (image.height / yParts).round();
+    final int yParts = (maxHeight == 0) ? 1 : (image.height / maxHeight).ceil();
+    final int partHeight = (image.height / yParts).round();
 
     /// Iterate over each vertical part
     ///
     for (int i = 0; i < yParts; i++) {
       /// Extract a part of the image
       ///
-      final partImage = await _extractImagePart(
+      final ui.Image partImage = await _extractImagePart(
           image, 0, i * partHeight, image.width, partHeight);
 
       /// Convert the extracted image part to byte data
       ///
-      final partBytes = await _imageToByteData(partImage);
+      final Uint8List? partBytes = await _imageToByteData(partImage);
 
       /// Add the byte data of the part to the list if it's not null
       ///
@@ -45,15 +45,15 @@ class ImageDecoder {
   ///
   Future<ui.Image> _extractImagePart(
       ui.Image image, int x, int y, int width, int height) async {
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder);
-    final paint = Paint();
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final ui.Canvas canvas = Canvas(recorder);
+    final ui.Paint paint = Paint();
 
     /// Define source and destination rectangles for cropping
     ///
-    final src = Rect.fromLTWH(
+    final ui.Rect src = Rect.fromLTWH(
         x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble());
-    final dst = Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
+    final ui.Rect dst = Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
 
     /// Draw the specified part of the image onto the canvas
     ///
@@ -61,7 +61,7 @@ class ImageDecoder {
 
     /// End recording and create an image from the recorded picture
     ///
-    final picture = recorder.endRecording();
+    final ui.Picture picture = recorder.endRecording();
     return picture.toImage(width, height);
   }
 
@@ -70,7 +70,7 @@ class ImageDecoder {
   Future<Uint8List?> _imageToByteData(ui.Image image) async {
     /// Get the byte data from the image in PNG format
     ///
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List();
   }
 
@@ -79,11 +79,11 @@ class ImageDecoder {
   Future<ui.Image> _loadImage(Uint8List image) async {
     /// Instantiate an image codec from the byte data
     ///
-    final codec = await ui.instantiateImageCodec(image);
+    final ui.Codec codec = await ui.instantiateImageCodec(image);
 
     /// Get the first frame from the codec
     ///
-    final frame = await codec.getNextFrame();
+    final ui.FrameInfo frame = await codec.getNextFrame();
 
     /// Return the image from the frame
     ///

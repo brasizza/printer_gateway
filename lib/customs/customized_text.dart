@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
 
+/// A widget that displays customizable text with various styling options.
+///
+/// This widget supports:
+/// - Text alignment (left, center, right, justify)
+/// - Font styling (bold, italic)
+/// - Font size customization
+/// - Reverse colors (white on black)
+/// - Custom font families
+/// - Sensitive content obscuring
 class CustomizedText extends StatelessWidget {
+  /// Creates a [CustomizedText] widget.
+  ///
+  /// The [linha] parameter contains the text content and customization options.
   const CustomizedText({
     super.key,
     required this.linha,
   });
 
+  /// The line configuration map containing:
+  /// - 'content': The text to display
+  /// - 'sensive_content': Optional sensitive data to obscure
+  /// - 'customization': Styling options (font_size, font_style, alignment, etc.)
   final Map linha;
 
+  /// Obscures sensitive string data by showing only partial characters.
+  ///
+  /// For strings with 3+ characters: shows first 3 and last 2 characters.
+  /// For shorter strings: shows first and last character.
+  /// Single character strings are returned unchanged.
   String obscureString(String input) {
-    int length = input.length;
+    final int length = input.length;
 
     // If the string is less than 5 characters, show only the first and last character
     if (length < 3) {
@@ -23,6 +44,14 @@ class CustomizedText extends StatelessWidget {
     return " ${input.substring(0, 3)}${'*' * (length - 5)}${input.substring(length - 2)}";
   }
 
+  /// Determines text alignment based on the customization configuration.
+  ///
+  /// Accepts values:
+  /// - 0: Left/Start alignment
+  /// - 1: Center alignment
+  /// - 2: Right/End alignment
+  /// - 3: Justify alignment
+  /// - Default: Center alignment
   TextAlign customAlignment({required Map customizacao}) {
     return switch (customizacao['alignment']) {
       0 => TextAlign.start,
@@ -33,6 +62,14 @@ class CustomizedText extends StatelessWidget {
     };
   }
 
+  /// Creates a custom TextStyle based on the customization configuration.
+  ///
+  /// Reads the following properties from customization:
+  /// - 'font_size': Text size (scaled by 1.5x)
+  /// - 'font_style': Object with 'bold' and 'italic' booleans
+  /// - 'font_name': Optional custom font family name
+  ///
+  /// Returns a configured TextStyle object.
   TextStyle customFont({required Map customizacao}) {
     FontWeight weight = FontWeight.normal;
     FontStyle style = FontStyle.normal;

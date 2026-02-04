@@ -6,24 +6,54 @@ import 'package:flutter/material.dart';
 import '../customs/custom_builder.dart';
 
 // ignore: constant_identifier_names
-enum GenericType { HEADER, FOOTER }
+/// Type of fixed layout section in the receipt.
+enum GenericType {
+  /// Header section at the top of the receipt.
+  HEADER,
 
+  /// Footer section at the bottom of the receipt.
+  FOOTER
+}
+
+/// Controller responsible for parsing JSON receipt data and building
+/// the corresponding Flutter widget layout.
+///
+/// This controller handles the conversion of JSON-formatted receipt data
+/// into a list of widgets that can be rendered. It supports various receipt
+/// elements including text lines, columns, tables, headers, and footers.
 class LayoutController {
+
+  /// Creates a [LayoutController] instance.
+  ///
+  /// The [imageHeader] and [imageFooter] parameters are optional images
+  /// that can be displayed in the header or footer sections of the receipt.
+  LayoutController({required this.imageHeader, required this.imageFooter});
+  /// Optional header image to be displayed at the top of the receipt.
   final Uint8List? imageHeader;
+
+  /// Optional footer image to be displayed at the bottom of the receipt.
   final Uint8List? imageFooter;
 
-  List<Widget> layoutReceipt = [];
+  /// The list of widgets representing the complete receipt layout.
+  List<Widget> layoutReceipt = <Widget>[];
 
-  LayoutController({required this.imageHeader, required this.imageFooter});
-
+  /// Parses JSON content and builds the receipt layout.
+  ///
+  /// Takes a [jsonContent] string containing the receipt data in JSON format
+  /// and processes it to populate the [layoutReceipt] list with widgets.
+  ///
+  /// Supports special keys:
+  /// - 'header': Creates a header section with optional image
+  /// - 'footer': Creates a footer section with optional image
+  /// - 'line': Creates a regular line item
   void parse(String jsonContent) {
-    final jsonData = json.decode(jsonContent) as List;
-    for (var data in jsonData) {
+    final List<dynamic> jsonData = json.decode(jsonContent) as List;
+    for (final data in jsonData) {
       if (data.containsKey('header')) {
-        final header = data['header'] as List;
+        final List<dynamic> header = data['header'] as List;
         _buildFixedLayout(header, GenericType.HEADER);
       } else if (data.containsKey('footer')) {
-        final footer = data['footer'] as List;
+        final List<dynamic> footer = data['footer'] as List;
         _buildFixedLayout(footer, GenericType.FOOTER);
       } else {
         layoutReceipt.addAll(_buildLine(data));
@@ -31,26 +61,34 @@ class LayoutController {
     }
   }
 
+  /// Builds a line widget from the provided data.
+  ///
+  /// Handles different types of line layouts:
+  /// - Simple text lines
+  /// - Column-based layouts (two or more columns)
+  /// - Table layouts with headers and items
+  ///
+  /// Returns a list of widgets representing the line content.
   List<Widget> _buildLine(data) {
-    final returnWidgets = <Widget>[];
-    final linha = data['line'] as Map;
+    final List<Widget> returnWidgets = <Widget>[];
+    final Map<dynamic, dynamic> linha = data['line'] as Map;
 
     if (linha.containsKey('column')) {
-      final widgetHeader = <Widget>[];
-      final widgetColunas = <Widget>[];
+      final List<Widget> widgetHeader = <Widget>[];
+      final List<Widget> widgetColunas = <Widget>[];
       final totalColunas = linha['column'].length;
-      Map<int, TableColumnWidth> columnWidth = {};
-      final row = <TableRow>[];
+      final Map<int, TableColumnWidth> columnWidth = <int, TableColumnWidth>{};
+      final List<TableRow> row = <TableRow>[];
 
       if (totalColunas > 0) {
-        final razao = (100 / totalColunas);
-        final colunas = linha['column'] as List;
+        final double razao = (100 / totalColunas);
+        final List<dynamic> colunas = linha['column'] as List;
         final listCabecalho = colunas.firstWhere((c) => c.containsKey('header'),
             orElse: () => null);
         if (listCabecalho != null) {
-          final cabecalho = listCabecalho['header'] as List;
+          final List<dynamic> cabecalho = listCabecalho['header'] as List;
 
-          for (var i = 0; i < cabecalho.length; i++) {
+          for (int i = 0; i < cabecalho.length; i++) {
             columnWidth[i] = FractionColumnWidth(
                 (int.tryParse(cabecalho[i]['row']['size'].toString()) ??
                         razao) /
@@ -59,8 +97,8 @@ class LayoutController {
         }
 
         if (listCabecalho != null) {
-          final cabecalho = listCabecalho['header'] as List;
-          for (var cabeca in cabecalho) {
+          final List<dynamic> cabecalho = listCabecalho['header'] as List;
+          for (final cabeca in cabecalho) {
             final linha = cabeca['row'];
             if (linha != null) {
               widgetHeader.add(TableCell(
@@ -77,7 +115,7 @@ class LayoutController {
           }
         }
         if (linha.containsKey('column')) {
-          for (var coluna in linha['column']) {
+          for (final coluna in linha['column']) {
             final linha = coluna['row'];
             if (linha != null) {
               widgetColunas.add(TableCell(
@@ -86,10 +124,10 @@ class LayoutController {
             } else {
               final items = (listCabecalho['items']);
               if (items != null) {
-                var widgetItems = <Widget>[];
-                for (var item in items) {
+                final List<Widget> widgetItems = <Widget>[];
+                for (final item in items) {
                   widgetItems.clear();
-                  for (var itemLine in item) {
+                  for (final itemLine in item) {
                     final linha = itemLine['row'];
                     if (linha != null) {
                       widgetItems.add(TableCell(
@@ -100,7 +138,7 @@ class LayoutController {
                   if (widgetItems.isNotEmpty) {
                     row.add(
                       TableRow(
-                        children: [...widgetItems],
+                        children: <Widget>[...widgetItems],
                       ),
                     );
                   }
@@ -135,10 +173,17 @@ class LayoutController {
     return returnWidgets;
   }
 
+  /// Builds a fixed layout section (header or footer) with optional image.
+  ///
+  /// Takes a list of [item] data and a [footer] type (HEADER or FOOTER)
+  /// to determine positioning and styling of the section.
+  ///
+  /// If an image is available and the 'image' flag is set to true,
+  /// the image will be displayed alongside the content.
   void _buildFixedLayout(List<dynamic> item, GenericType footer) {
-    final headerLayout = <Widget>[];
+    final List<Widget> headerLayout = <Widget>[];
     bool hasImage = false;
-    for (var linha in item) {
+    for (final linha in item) {
       if (linha.containsKey('image')) {
         hasImage = linha['image'] ?? false;
       } else {
@@ -148,7 +193,7 @@ class LayoutController {
       }
     }
 
-    final image = switch (footer) {
+    final Uint8List? image = switch (footer) {
       GenericType.HEADER => imageHeader,
       GenericType.FOOTER => imageFooter,
     };
@@ -156,13 +201,10 @@ class LayoutController {
       layoutReceipt.add(
         Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Expanded(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: headerLayout,
             )),
             (image != null && hasImage)
@@ -178,9 +220,8 @@ class LayoutController {
       layoutReceipt.add(
         Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             (image != null && hasImage)
                 ? ColorFiltered(
                     colorFilter: const ColorFilter.mode(
