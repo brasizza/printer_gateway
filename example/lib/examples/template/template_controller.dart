@@ -47,9 +47,8 @@ class TemplateController {
       maxWidth: maxWidth,
       margin: margin,
     );
-    if(!context.mounted){
+    if (!context.mounted) {
       return image;
-
     }
     final image2 = await printerGateway.toImage(context);
 

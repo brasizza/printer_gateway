@@ -27,21 +27,23 @@ class TemplatePage extends StatelessWidget {
                     )),
                   ),
                 ),
-              kIsWeb|| kIsWasm ? const SizedBox():    ElevatedButton(
-                  onPressed: () async {
-                    final listImage = await controller.loadImage(context,
-                        maxHeight: 2000, margin: 20);
-                    final PrinterController printerController =
-                        PrinterController();
-                    await printerController.init();
-                    await printerController.printImage(listImage);
-                    printerController.cut();
-                    printerController.disconnect();
-                  },
-                  child: const Text(
-                    "Imprimir",
-                  ),
-                )
+                kIsWeb || kIsWasm
+                    ? const SizedBox()
+                    : ElevatedButton(
+                        onPressed: () async {
+                          final listImage = await controller.loadImage(context,
+                              maxHeight: 2000, margin: 20);
+                          final PrinterController printerController =
+                              PrinterController();
+                          await printerController.init();
+                          await printerController.printImage(listImage);
+                          printerController.cut();
+                          printerController.disconnect();
+                        },
+                        child: const Text(
+                          "Imprimir",
+                        ),
+                      )
               ],
             ),
           );
