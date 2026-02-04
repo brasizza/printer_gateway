@@ -4,6 +4,14 @@ A Flutter package that converts JSON data into formatted receipts/documents. It 
 
 [![pub package](https://img.shields.io/pub/v/printer_gateway.svg)](https://pub.dev/packages/printer_gateway)
 
+## 🚀 Live Demo
+
+**[See it in action →](https://printer.brasizza.com/)**
+
+Try the package online and see how your JSON receipts are rendered in real-time!
+
+---
+
 ## Why This Package?
 
 **The Problem:** When printing receipts line-by-line or using device-specific SDK methods across different thermal printers, the same receipt often appears inconsistent. Issues arise from:
@@ -30,7 +38,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  printer_gateway: ^0.0.1
+  printer_gateway: latest
 ```
 
 Then run:

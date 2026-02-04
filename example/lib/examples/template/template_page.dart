@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stub_printer/examples/template/template_controller.dart';
 
@@ -26,7 +27,7 @@ class TemplatePage extends StatelessWidget {
                     )),
                   ),
                 ),
-                ElevatedButton(
+              kIsWeb|| kIsWasm ? const SizedBox():    ElevatedButton(
                   onPressed: () async {
                     final listImage = await controller.loadImage(context,
                         maxHeight: 2000, margin: 20);
