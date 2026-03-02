@@ -26,22 +26,21 @@ class CustomizedText extends StatelessWidget {
 
   /// Obscures sensitive string data by showing only partial characters.
   ///
-  /// For strings with 3+ characters: shows first 3 and last 2 characters.
+  /// For strings with [minLength]+ characters: shows first 3 and last 2 characters.
   /// For shorter strings: shows first and last character.
   /// Single character strings are returned unchanged.
-  String obscureString(String input) {
+  /// [minLength] defines the minimum length to apply the obscure logic (default: 5).
+  String obscureString(String input, {int minLength = 5}) {
     final int length = input.length;
 
-    // If the string is less than 5 characters, show only the first and last character
-    if (length < 3) {
-      if (length == 1) {
-        return input; // If the string is a single character, return it as is
-      }
+    if (length <= 1) return input;
+
+    if (length <= minLength) {
       return input[0] + '*' * (length - 2) + input[length - 1];
     }
 
-    // For strings with 5 or more characters, show the first 3 and last 2 characters
-    return " ${input.substring(0, 3)}${'*' * (length - 5)}${input.substring(length - 2)}";
+    // For strings longer than minLength, show the first 3 and last 2 characters
+    return "${input.substring(0, 3)}${'*' * (length - 5)}${input.substring(length - 2)}";
   }
 
   /// Determines text alignment based on the customization configuration.
