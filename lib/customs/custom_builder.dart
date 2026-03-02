@@ -17,7 +17,6 @@ import 'customized_text.dart';
 /// The [linha] map determines which component is built by checking for
 /// specific keys.
 class CustomBuilder extends StatelessWidget {
-
   /// Creates a [CustomBuilder] widget.
   ///
   /// The [linha] parameter must contain at least one of the following keys:
@@ -26,9 +25,10 @@ class CustomBuilder extends StatelessWidget {
   /// - 'jump': for blank space
   /// - 'qrcode': for QR code generation
   const CustomBuilder({super.key, required this.linha});
+
   /// The line data map containing the type and properties of the component
   /// to be built.
-  final Map<dynamic,dynamic> linha;
+  final Map<dynamic, dynamic> linha;
 
   @override
   Widget build(BuildContext context) {

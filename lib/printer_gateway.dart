@@ -20,7 +20,6 @@ import 'package:screenshot/screenshot.dart';
 /// The primary goal is to ensure consistent receipt rendering across
 /// different devices by generating a unified image representation.
 class PrinterGateway {
-
   /// Creates a [PrinterGateway] instance.
   ///
   /// The [jsonData] parameter contains the receipt structure in JSON format.
@@ -35,6 +34,7 @@ class PrinterGateway {
       : _jsonData = jsonData,
         _imageHeader = imageHeader,
         _imageFooter = imageFooter;
+
   /// The JSON string containing the receipt data structure.
   String _jsonData;
 

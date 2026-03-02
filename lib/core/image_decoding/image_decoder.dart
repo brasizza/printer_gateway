@@ -53,7 +53,8 @@ class ImageDecoder {
     ///
     final ui.Rect src = Rect.fromLTWH(
         x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble());
-    final ui.Rect dst = Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
+    final ui.Rect dst =
+        Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
 
     /// Draw the specified part of the image onto the canvas
     ///
@@ -70,7 +71,8 @@ class ImageDecoder {
   Future<Uint8List?> _imageToByteData(ui.Image image) async {
     /// Get the byte data from the image in PNG format
     ///
-    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List();
   }
 

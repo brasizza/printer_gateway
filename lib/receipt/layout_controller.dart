@@ -22,12 +22,12 @@ enum GenericType {
 /// into a list of widgets that can be rendered. It supports various receipt
 /// elements including text lines, columns, tables, headers, and footers.
 class LayoutController {
-
   /// Creates a [LayoutController] instance.
   ///
   /// The [imageHeader] and [imageFooter] parameters are optional images
   /// that can be displayed in the header or footer sections of the receipt.
   LayoutController({required this.imageHeader, required this.imageFooter});
+
   /// Optional header image to be displayed at the top of the receipt.
   final Uint8List? imageHeader;
 
@@ -69,7 +69,7 @@ class LayoutController {
   /// - Table layouts with headers and items
   ///
   /// Returns a list of widgets representing the line content.
-  List<Widget> _buildLine(data) {
+  List<Widget> _buildLine(Map<String, dynamic> data) {
     final List<Widget> returnWidgets = <Widget>[];
     final Map<dynamic, dynamic> linha = data['line'] as Map;
 
