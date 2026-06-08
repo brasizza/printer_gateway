@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  barcode_widget: ^2.0.4
   image: ^4.2.0
   pretty_qr_code: ^3.3.0
   screenshot: ^3.0.0

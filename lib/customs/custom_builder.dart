@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'custom_barcode.dart';
 import 'custom_divider.dart';
 import 'custom_jump_line.dart';
 import 'custom_qrcode.dart';
@@ -13,6 +14,7 @@ import 'customized_text.dart';
 /// - Divider lines (divider)
 /// - Blank lines/jumps (jump)
 /// - QR codes (qrcode)
+/// - Barcodes (barcode)
 ///
 /// The [linha] map determines which component is built by checking for
 /// specific keys.
@@ -24,6 +26,7 @@ class CustomBuilder extends StatelessWidget {
   /// - 'divider': for separator lines
   /// - 'jump': for blank space
   /// - 'qrcode': for QR code generation
+  /// - 'barcode': for barcode generation
   const CustomBuilder({super.key, required this.linha});
 
   /// The line data map containing the type and properties of the component
@@ -32,17 +35,13 @@ class CustomBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (linha.containsKey('content')) {
-      return _buildCustomizedText();
-    } else if (linha.containsKey('divider')) {
-      return const CustomDivider();
-    } else if (linha.containsKey('jump')) {
-      return _buildCustomJumpLine();
-    } else if (linha.containsKey('qrcode')) {
-      return _buildCustomQrcode();
-    } else {
-      return const SizedBox.shrink();
-    }
+    if (linha.containsKey('content')) return _buildCustomizedText();
+    if (linha.containsKey('divider')) return const CustomDivider();
+    if (linha.containsKey('jump')) return _buildCustomJumpLine();
+    if (linha.containsKey('qrcode')) return _buildCustomQrcode();
+    if (linha.containsKey('barcode')) return _buildCustomBarcode();
+
+    return const SizedBox.shrink();
   }
 
   /// Builds a customized text widget with styling options.
@@ -62,5 +61,10 @@ class CustomBuilder extends StatelessWidget {
   /// Builds a QR code widget with the provided data.
   Widget _buildCustomQrcode() {
     return CustomQrcode(qrcode: linha['qrcode']);
+  }
+
+  /// Builds a barcode widget with the provided data.
+  Widget _buildCustomBarcode() {
+    return CustomBarcode(barcode: linha['barcode']);
   }
 }

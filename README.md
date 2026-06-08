@@ -28,7 +28,7 @@ Try the package online and see how your JSON receipts are rendered in real-time!
 - 📄 **JSON to Widget**: Convert JSON receipt data into Flutter widgets
 - 🖼️ **JSON to Image**: Generate image representation of receipts
 - 🖨️ **Printer Support**: Export to POS and ESC/POS printer formats
-- 🎨 **Rich Formatting**: Support for text styling, alignment, tables, QR codes, and more
+- 🎨 **Rich Formatting**: Support for text styling, alignment, tables, QR codes, barcodes, and more
 - 📐 **Flexible Layouts**: Single lines, columns, tables with headers and items
 - 🔧 **Customizable**: Add header/footer images, adjust margins and widths
 
@@ -293,6 +293,39 @@ Generates a QR code in the receipt.
   - `"M"` = Medium (~15% correction)
   - `"Q"` = Quartile (~25% correction)
   - `"H"` = High (~30% correction)
+
+---
+
+#### 3.1. Barcode
+
+Generates a 1D barcode (or QR) in the receipt.
+
+```json
+{
+  "line": {
+    "barcode": {
+      "size": 80,
+      "content": "123456789012",
+      "type": "code128",
+      "drawText": true
+    }
+  }
+}
+```
+
+**Barcode Properties:**
+- `size`: Number - Height of the barcode in pixels (default: `80`). The barcode stretches to the available receipt width.
+- `content`: String - Data to encode in the barcode
+- `type`: String - Barcode symbology (default: `"code128"`)
+  - `"code128"` = Code 128 (accepts the widest range of input)
+  - `"code39"` = Code 39
+  - `"ean13"` = EAN-13 (requires 12-13 digits)
+  - `"ean8"` = EAN-8 (requires 7-8 digits)
+  - `"upca"` = UPC-A (requires 11-12 digits)
+  - `"itf"` = Interleaved 2 of 5
+- `drawText`: Boolean (optional) - Render the human-readable text below the barcode (default: `true`)
+
+> If `content` is not valid for the chosen `type` (for example, letters in an `ean13`), the barcode is silently skipped rather than throwing.
 
 ---
 
@@ -1216,6 +1249,14 @@ for (var part in parts) {
       "level": "L"  // L, M, Q, or H
     },
     
+    // OR BARCODE
+    "barcode": {
+      "size": 80,
+      "content": "123456789012",
+      "type": "code128",  // code128, code39, ean13, ean8, upca, itf, qrCode
+      "drawText": true
+    },
+    
     // OR JUMP LINES
     "jump": 2,
     
@@ -1262,6 +1303,7 @@ for (var part in parts) {
 
 This package depends on:
 - `flutter`: SDK
+- `barcode_widget`: ^2.0.4
 - `image`: ^4.2.0
 - `pretty_qr_code`: ^3.3.0
 - `screenshot`: ^3.0.0
