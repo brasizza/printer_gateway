@@ -1253,7 +1253,7 @@ for (var part in parts) {
     "barcode": {
       "size": 80,
       "content": "123456789012",
-      "type": "code128",  // code128, code39, ean13, ean8, upca, itf, qrCode
+      "type": "code128",  // code128, code39, ean13, ean8, upca, itf
       "drawText": true
     },
     
