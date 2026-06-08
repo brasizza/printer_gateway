@@ -53,12 +53,17 @@ class CustomBarcode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double height =
-        (int.tryParse(barcode['size'].toString()) ?? 80).toDouble();
+     final double height = (barcode['size'] is num
+             ? (barcode['size'] as num).toDouble()
+             : double.tryParse(barcode['size']?.toString() ?? '')) ??
+         80.0;
+
+          final String data = (barcode['content'] ?? '').toString();
+     if (data.isEmpty) return const SizedBox.shrink();
     return Center(
       child: BarcodeWidget(
         barcode: _resolveType(barcode['type']),
-        data: barcode['content'] ?? '',
+        data: data,
         height: height,
         drawText: _resolveDrawText(barcode['drawText']),
         errorBuilder: (context, error) => const SizedBox.shrink(),
