@@ -39,19 +39,24 @@ class LayoutReceipt extends StatelessWidget {
     final controller =
         LayoutController(imageHeader: imageHeader, imageFooter: imageFooter);
     controller.parse(jsonContent);
-    return Theme(
-      data: ThemeData.light(),
-      child: DefaultTextStyle(
-        style: const TextStyle(),
-        child: Material(
-          child: SizedBox(
-            width: maxWidth,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: margin.toDouble()),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: controller.layoutReceipt,
+    return MediaQuery(
+      data: const MediaQueryData(
+        textScaler: TextScaler.noScaling,
+      ),
+      child: Theme(
+        data: ThemeData.light(),
+        child: DefaultTextStyle(
+          style: const TextStyle(),
+          child: Material(
+            child: SizedBox(
+              width: maxWidth,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: margin.toDouble()),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: controller.layoutReceipt,
+                ),
               ),
             ),
           ),

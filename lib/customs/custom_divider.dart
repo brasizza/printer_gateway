@@ -10,18 +10,21 @@ class CustomDivider extends StatelessWidget {
     super.key,
     this.linha,
   });
+
   /// Creates a [CustomDivider] widget.
 
   @override
   Widget build(BuildContext context) {
     final bool isVisible = linha?.containsKey('divider') ?? true;
-   //se o linha['divider'] for um map e tiver o campo thickness e height, use esses valores caso contrario o fallback dos 2 é 1 
-    final int thickness = (linha?['divider'] is Map && linha?['divider']?['thickness'] != null)
+    //se o linha['divider'] for um map e tiver o campo thickness e height, use esses valores caso contrario o fallback dos 2 é 1
+    final int thickness = (linha?['divider'] is Map &&
+            linha?['divider']?['thickness'] != null)
         ? int.tryParse(linha?['divider']?['thickness']?.toString() ?? '1') ?? 1
         : 1;
-    final int height = (linha?['divider'] is Map && linha?['divider']?['height'] != null)
-        ? int.tryParse(linha?['divider']?['height']?.toString() ?? '1') ?? 1
-        : 1;
+    final int height =
+        (linha?['divider'] is Map && linha?['divider']?['height'] != null)
+            ? int.tryParse(linha?['divider']?['height']?.toString() ?? '5') ?? 5
+            : 5;
 
     return isVisible
         ? Divider(

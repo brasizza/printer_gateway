@@ -1,3 +1,6 @@
+## 0.0.6
+* update CustomDivider to use customizable height and thickness and refactor LayoutReceipt to include MediaQuery
+
 ## 0.0.5
 * Create Barcode Supporting by [Pedro Souza](https://github.com/sousa-p)
 ## 0.0.4

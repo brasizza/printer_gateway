@@ -50,7 +50,7 @@ class CustomBuilder extends StatelessWidget {
   }
 
   Widget _buildCustomDivider() {
-    return  CustomDivider(linha:linha);
+    return CustomDivider(linha: linha);
   }
 
   /// Builds blank lines based on the jump value.

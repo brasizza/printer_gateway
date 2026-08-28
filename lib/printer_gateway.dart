@@ -1,5 +1,3 @@
-library printer_gateway;
-
 import 'dart:developer';
 import 'dart:typed_data';
 

@@ -266,7 +266,17 @@ A horizontal separator line.
   }
 }
 ```
-
+* Line with new parameters: height and thickness
+```json
+{
+  "line": {
+    "divider": {
+      "height": 4,
+      "thickness": 3,
+    }
+  }
+}
+```
 ---
 
 #### 3. QR Code
