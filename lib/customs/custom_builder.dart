@@ -36,7 +36,7 @@ class CustomBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (linha.containsKey('content')) return _buildCustomizedText();
-    if (linha.containsKey('divider')) return const CustomDivider();
+    if (linha.containsKey('divider')) return _buildCustomDivider();
     if (linha.containsKey('jump')) return _buildCustomJumpLine();
     if (linha.containsKey('qrcode')) return _buildCustomQrcode();
     if (linha.containsKey('barcode')) return _buildCustomBarcode();
@@ -47,6 +47,10 @@ class CustomBuilder extends StatelessWidget {
   /// Builds a customized text widget with styling options.
   Widget _buildCustomizedText() {
     return CustomizedText(linha: linha);
+  }
+
+  Widget _buildCustomDivider() {
+    return  CustomDivider(linha:linha);
   }
 
   /// Builds blank lines based on the jump value.
